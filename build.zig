@@ -10,24 +10,27 @@ pub fn build(b: *std.Build) void {
     const optimize = b.standardOptimizeOption(.{});
     const target = b.standardTargetOptions(.{});
 
-    const translate_c = b.dependency("translate_c", .{});
-    const t: Translator = .init(translate_c, .{
-        .c_source_file = b.addWriteFiles().add("wrapper.h",
-            \\#pragma once
-            \\#include <termios.h>
-            \\
-        ),
-        .target = target,
-        .optimize = optimize,
-        .default_init = false,
-    });
-
     const serial_mod = b.addModule("serial", .{
         .root_source_file = b.path("src/serial.zig"),
-        .imports = &.{
-            .{ .name = "termios_c", .module = t.mod },
-        },
     });
+
+    switch (target.result.os.tag) {
+        .linux, .macos => {
+            const translate_c = b.dependency("translate_c", .{});
+            const t: Translator = .init(translate_c, .{
+                .c_source_file = b.addWriteFiles().add("wrapper.h",
+                    \\#pragma once
+                    \\#include <termios.h>
+                    \\
+                ),
+                .target = target,
+                .optimize = optimize,
+                .default_init = false,
+            });
+            serial_mod.addImport("termios_c", t.mod);
+        },
+        else => {},
+    }
 
     const unit_tests = b.addTest(.{
         .root_module = b.createModule(.{

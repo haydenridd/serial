@@ -17,7 +17,7 @@ Library for configuring and listing serial ports.
 
 ## What version of Zig to use
 
-Zig 0.16.0
+Zig 0.17.0
 
 ## Example
 
