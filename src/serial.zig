@@ -1,6 +1,6 @@
 const std = @import("std");
 const builtin = @import("builtin");
-const c = @cImport(@cInclude("termios.h"));
+const c = @import("termios_c");
 const Io = std.Io;
 
 pub fn list(io: Io) !PortIterator {

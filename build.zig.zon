@@ -1,7 +1,7 @@
 .{
     .name = .serial,
     .version = "0.0.1",
-    .minimum_zig_version = "0.16.0",
+    .minimum_zig_version = "0.17.0",
     .fingerprint = 0xd374c9dccc91873e,
     .paths = .{
         "src", // all files in src directory
@@ -9,5 +9,11 @@
         "LICENSE",
         "build.zig",
         "build.zig.zon",
+    },
+    .dependencies = .{
+        .translate_c = .{
+            .url = "git+https://codeberg.org/ziglang/translate-c?ref=zig-0.17.x#f978dca0f2b2a782d06591989e80aae7c74d0183",
+            .hash = "translate_c-2.0.1-Q_BUWmVOBwDWdxpDb7n6-LpMznKteZvXbL_4r6DxB2_d",
+        },
     },
 }
